@@ -1,0 +1,44 @@
+import sql from 'mssql';
+import 'dotenv/config';
+
+const config = {
+  user: process.env.AZURE_SQL_USER,
+  password: process.env.AZURE_SQL_PASSWORD,
+  server: process.env.AZURE_SQL_SERVER,
+  database: process.env.AZURE_SQL_DATABASE,
+  options: {
+    encrypt: true
+  }
+};
+
+// Query function for SELECT statements
+export async function query(sqlQuery, params = []) {
+  try {
+    await sql.connect(config);
+    const request = new sql.Request();
+    params.forEach((p, i) => request.input(`param${i}`, p));
+    const result = await request.query(sqlQuery);
+    return result.recordset;
+  } catch (err) {
+    console.error('[DB ERROR]', err);
+    return [];
+  }
+}
+
+// Transaction function for transfers
+export async function transaction(amount, fromAccountId, toAccountId) {
+  try {
+    await sql.connect(config);
+    const request = new sql.Request();
+    await request.query(`
+      BEGIN TRANSACTION;
+      UPDATE Accounts SET balance = balance - ${amount} WHERE id = '${fromAccountId}' AND balance >= ${amount};
+      UPDATE Accounts SET balance = balance + ${amount} WHERE id = '${toAccountId}';
+      COMMIT;
+    `);
+    return { success: true };
+  } catch (err) {
+    console.error('[DB ERROR]', err);
+    return { success: false, msg: 'Transaction failed.' };
+  }
+}
