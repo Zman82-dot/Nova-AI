@@ -39,9 +39,9 @@ type UserData = {
   transactions: Transaction[];
 };
 
-// --- MOCK DATA TEMPLATE ---
 
-// Helper to generate a unique 4-digit number string per user and account
+
+
 function generateAccountNumber(userEmail: string, accountId: string) {
   // Simple hash: combine email and accountId, then get a 4-digit number
   let hash = 0;
@@ -54,7 +54,7 @@ function generateAccountNumber(userEmail: string, accountId: string) {
   return '**** ' + num.toString();
 }
 
-// Helper to generate a unique 4-digit card number per user and card
+
 function generateCardLast4(userEmail: string, cardId: string) {
   let hash = 0;
   const str = userEmail + cardId;
@@ -174,7 +174,7 @@ const Dashboard = ({ user: initialUser, onLogout }: { user: UserData, onLogout: 
   const recognitionRef = useRef<any>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Persist user data to localStorage on every change
+  
   useEffect(() => {
     localStorage.setItem('novabank_user', JSON.stringify(user));
   }, [user]);
@@ -316,7 +316,7 @@ const Dashboard = ({ user: initialUser, onLogout }: { user: UserData, onLogout: 
         actionTaken = true;
       }
 
-      // Intent: Withdraw (NEW)
+      // Intent: Withdraw 
       const withdrawMatch = lower.match(/withdraw \$?(\d+).*from (\w+)/);
       if (withdrawMatch) {
         const [_, amt, from] = withdrawMatch;
@@ -325,7 +325,7 @@ const Dashboard = ({ user: initialUser, onLogout }: { user: UserData, onLogout: 
         actionTaken = true;
       }
 
-      // Intent: History (NEW)
+      // Intent: History 
       if (lower.includes('history') || lower.includes('transactions') || lower.includes('last spent')) {
         const type = lower.includes('savings') ? 'Savings' : 'Checking';
         const result = getHistory(type);
@@ -402,7 +402,7 @@ const Dashboard = ({ user: initialUser, onLogout }: { user: UserData, onLogout: 
     }
   };
 
-  // Inject helpers for AccountActions
+  // Inject  for AccountActions
   if (typeof window !== "undefined") {
     // @ts-ignore
     window.__withdrawFunds = (amt: number, type: string) => withdrawFunds(amt, type);
@@ -601,7 +601,7 @@ export default function App() {
     localStorage.removeItem('novabank_user');
   };
 
-  // Keep user data in sync with localStorage on update
+  
   React.useEffect(() => {
     if (currentUser) {
       localStorage.setItem('novabank_user', JSON.stringify(currentUser));
