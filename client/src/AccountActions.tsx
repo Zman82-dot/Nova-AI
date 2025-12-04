@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// Extend window type for injected helpers
+
 declare global {
   interface Window {
     __withdrawFunds?: (amt: number, type: string) => void;
@@ -13,7 +13,7 @@ export default function AccountActions({ acc }: { acc: any }) {
   const [depositAmt, setDepositAmt] = useState("");
   const [withdrawAmt, setWithdrawAmt] = useState("");
   const [transferAmt, setTransferAmt] = useState("");
-  // These functions will be injected via window for now
+  
   // @ts-ignore
   const withdrawFunds = (amt: number, type: string) => window.__withdrawFunds?.(amt, type);
   // @ts-ignore
