@@ -84,3 +84,39 @@ const PORT = process.env.API_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}`);
 });
+
+// Get ATM transactions for user
+app.get('/api/atm', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ error: 'userId required' });
+  const atmTransactions = await query('SELECT * FROM ATMTransactions WHERE userId = ? ORDER BY date DESC', [userId]);
+  res.json(atmTransactions);
+});
+
+// Get ATM withdrawals for user
+app.get('/api/atm/withdrawals', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ error: 'userId required' });
+  const withdrawals = await query('SELECT * FROM ATMTransactions WHERE userId = ? AND type = "withdrawal" ORDER BY date DESC', [userId]);
+  res.json(withdrawals);
+});
+
+// Get ATM deposits for user
+app.get('/api/atm/deposits', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ error: 'userId required' });
+  const deposits = await query('SELECT * FROM ATMTransactions WHERE userId = ? AND type = "deposit" ORDER BY date DESC', [userId]);
+  res.json(deposits);
+});
+
+// Record ATM transaction
+app.post('/api/atm/record', async (req, res) => {
+  const { userId, accountId, type, amount } = req.body;
+  if (!userId || !accountId || !type || !amount) {
+    return res.status(400).json({ error: 'userId, accountId, type, and amount required' });
+  }
+  const date = new Date().toISOString().split('T')[0];
+  await query('INSERT INTO ATMTransactions (date, type, amount, accountId, userId) VALUES (?, ?, ?, ?, ?)', 
+    [date, type, amount, accountId, userId]);
+  res.json({ success: true, message: `ATM ${type} recorded` });
+});

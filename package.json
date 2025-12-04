@@ -1,16 +1,1 @@
-{ "type": "module",
-  "dependencies": {
-    "connect": "^3.7.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "mime": "^4.1.0",
-    "minimatch": "^10.1.1",
-    "mssql": "^12.1.1",
-    "qs": "^6.14.0",
-    "sqlite3": "^5.1.7",
-    "striptags": "^3.2.0",
-    "ws": "^8.18.3"
-  }
-}
+{"type":"module","dependencies":{"connect":"^3.7.0","cors":"^2.8.5","dotenv":"^17.2.3","ejs":"^3.1.10","express":"^5.1.0","mime":"^4.1.0","minimatch":"^10.1.1","mssql":"^12.1.1","qs":"^6.14.0","sqlite3":"^5.1.7","striptags":"^3.2.0","ws":"^8.18.3"}}

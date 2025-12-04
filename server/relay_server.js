@@ -1,7 +1,7 @@
-const WebSocket = require('ws');
-const { query, transaction } = require('./config/db.js');
+import WebSocket, { WebSocketServer } from 'ws';
+import { query, transaction } from './config/db.js';
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', async (clientWs) => {
     // 1. Connect to Azure OpenAI Realtime Endpoint

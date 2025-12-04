@@ -78,7 +78,29 @@ const initializeTables = () => {
                 status TEXT NOT NULL,
                 linkedAccountId TEXT NOT NULL
             );
-        `);
+        `)
+
+        await run(`
+            CREATE TABLE IF NOT EXISTS ATMTransactions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                date TEXT NOT NULL,
+                type TEXT NOT NULL,
+                amount REAL NOT NULL,
+                accountId TEXT NOT NULL,
+                userId TEXT NOT NULL
+            );
+        `)
+
+        await run(`
+            CREATE TABLE IF NOT EXISTS ATMTransactions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                date TEXT NOT NULL,
+                type TEXT NOT NULL,
+                amount REAL NOT NULL,
+                accountId TEXT NOT NULL,
+                userId TEXT NOT NULL
+            );
+        `);;;
 
         db.get("SELECT COUNT(*) AS count FROM Accounts", async (err, row) => {
             if (err) { console.error("Error checking account count:", err); return resolve(); }
